@@ -29,7 +29,7 @@ Ball = class Ball {
   reset(canvas) {
     this.X = canvas.width/2;
     this.Y = canvas.height/2;
-    this.velocityX = -this.velocityX;
+    this.reverseX();
     this.velocityY = 3;
   }
 }
