@@ -3,14 +3,21 @@ Game = class Game {
     this.ball = ball;
     this.paddle1 = paddle1;
     this.paddle2 = paddle2;
-    this.aiSpeed = 2;
+    this.aiSpeed = 2.2;
     this.score1 = 0;
     this.score2 = 0;
   }
 
   update(canvas) {
+    this.ball.move();
     this.hitDetection(canvas);
     this.moveAI();
+  }
+
+  draw() {
+    this.paddle1.draw(context);
+    this.paddle2.draw(context);
+    this.ball.draw(context);
   }
 
   hitDetection(canvas) {
@@ -18,16 +25,16 @@ Game = class Game {
     if (this.isHittingBottom(canvas)) { this.ball.reverseY(); }
 
     if (this.isHittingLeft()) {
-      if (this.isHittingPaddle(paddle1)) {
-        this.ball.bounce(paddle1, 0.3);
+      if (this.isHittingPaddle(this.paddle1)) {
+        this.ball.bounce(this.paddle1, 0.3);
       } else {
         this.score2++;
         this.reset(canvas);
       }
     }
     if (this.isHittingRight(canvas)) {
-      if (this.isHittingPaddle(paddle2)) {
-        this.ball.bounce(paddle2, 0.3);
+      if (this.isHittingPaddle(this.paddle2)) {
+        this.ball.bounce(this.paddle2, 0.3);
       } else {
         this.score1++;
         this.reset(canvas);
