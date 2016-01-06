@@ -6,18 +6,42 @@ Game = class Game {
     this.aiSpeed = 2.2;
     this.score1 = 0;
     this.score2 = 0;
+    this.dynamicFactor = 0.3;
   }
 
-  update(canvas) {
+  move(canvas) {
     this.ball.move();
     this.hitDetection(canvas);
     this.moveAI();
   }
 
-  draw() {
+  draw(context, canvas) {
+    this.drawStaticElements(context, canvas);
+    this.drawDynamicElements(context);
+  }
+
+  drawDynamicElements(context) {
     this.paddle1.draw(context);
     this.paddle2.draw(context);
     this.ball.draw(context);
+  }
+
+  drawStaticElements(context, canvas) {
+    context.fillStyle = 'black';
+    context.fillRect(0, 0, canvas.width, canvas.height);
+
+    context.fillStyle = 'white';
+    context.font = 'bold 28pt Calibri';
+    context.textAlign = 'center';
+    context.fillText(this.score1, 100, 100);
+    context.fillText(this.score2, canvas.width-100, 100);
+
+    context.beginPath();
+    context.setLineDash([4, 4]);
+    context.moveTo(canvas.width/2, 0);
+    context.lineTo(canvas.width/2, canvas.height);
+    context.strokeStyle = 'white';
+    context.stroke();
   }
 
   hitDetection(canvas) {
@@ -26,7 +50,7 @@ Game = class Game {
 
     if (this.isHittingLeft()) {
       if (this.isHittingPaddle(this.paddle1)) {
-        this.ball.bounce(this.paddle1, 0.3);
+        this.ball.bounce(this.paddle1, dynamicFactor);
       } else {
         this.score2++;
         this.reset(canvas);
@@ -34,7 +58,7 @@ Game = class Game {
     }
     if (this.isHittingRight(canvas)) {
       if (this.isHittingPaddle(this.paddle2)) {
-        this.ball.bounce(this.paddle2, 0.3);
+        this.ball.bounce(this.paddle2, dynamicFactor);
       } else {
         this.score1++;
         this.reset(canvas);
